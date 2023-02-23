@@ -1,0 +1,24 @@
+<!--
+  TODO: Update the EJS code to insert the following information:
+    - display_title
+    - url
+    - suggested_link_text
+    - publication_date
+    - summary_short
+
+  HINT: Not sure how to display the reviews, check out Bootstrap cards here: https://getbootstrap.com/docs/4.0/components/card/
+-->
+<%
+  if (items) { %>
+	<!-- Iterate the items object & update the cards variable -->
+    <% if (items !== undefined) { %>
+      <% items.movie_reviews.forEach(function(object){ %>
+        <tr>
+        <td><%- object[1] %></td>
+        <td><%- object[2] %></td>
+        <td><%- object[3] %></td>
+        </tr>
+      <% }); %>
+    <% } %>
+<% } %>
+

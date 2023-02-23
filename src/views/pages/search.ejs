@@ -1,0 +1,40 @@
+<%- include('../partials/header'); -%>
+<%- include('../partials/menu') %>
+<body>
+  <main>
+    <center><h2 style="padding: 2%;">Search CTAM</h2></center>
+    <div class="">
+      <div class="container-fluid" style="padding: 2%; ">
+        <form class="" action="/filter" method="post">
+          <div class="row">
+            <div class="col-3">
+
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" name="filter_name" placeholder="Filter by Last Name">
+            </div>
+            <div class="col-1">
+              <input class="btn btn-primary" type="submit" name="Filter" value = "Filter"/>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container">
+    <table class = "table">
+    <% if (items) {
+      var row = '<tr><th>Movie</th><th>Review</th><th>Review Date</th></tr>';
+
+      items.forEach(i => {
+        row = row + "<tr><td>" + i.movie_name +"</td>";
+        row = row + "<td>" + i.review + "</td>";
+        row = row + "<td>" + i.review_date + "</td></tr>";
+      });
+     } %>
+     <%- row %>
+    </table>
+  </div>
+
+  </main>
+<%- include('../partials/footer'); -%>
+
