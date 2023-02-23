@@ -66,7 +66,7 @@ app.get('/', function(req, res) {
   });
 
   app.get('/search', function(req, res) {
-	var data = "SELECT * FROM t_personnel";
+	var data = "SELECT * FROM t_personnel;";
 
 	db.task('get-everything', task => {
         return task.batch([
@@ -97,7 +97,7 @@ app.get('/', function(req, res) {
 
   app.post('/filter', function(req, res) {
 	var filt = req.body.filter_name;
-	var data = "select * from t_personnel where pers_last_name like '"+filt+"';";
+	var data = "select * from t_personnel where pers_last_name like '%"+filt+"%';";
 	var backup = "select * from t_personnel;";
 
 	db.task('get-everything', task => {
@@ -234,20 +234,5 @@ app.get('/', function(req, res) {
     
 // });
 
-
-//app.listen(3000);
-/*
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Express running → PORT ${server.address().port}`);
-});
-*/
-
 module.exports = app.listen(3000);
 console.log("3000 is the magic port");
-
-//app.listen(3000);
-/*
-const server = app.listen(process.env.PORT || 3000, () => {
-	console.log(`Express running → PORT ${server.address().port}`);
-  });
-  */

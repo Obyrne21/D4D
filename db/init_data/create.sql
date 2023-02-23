@@ -1,16 +1,24 @@
 DROP TABLE IF EXISTS t_personnel CASCADE;
 CREATE TABLE IF NOT EXISTS t_personnel (
-  pers_id int NOT NULL /*AUTO_INCREMENT*/,
+  pers_id int DEFAULT NULL,
   pers_first_name varchar(45) DEFAULT NULL,
   pers_last_name varchar(45) DEFAULT NULL,
-  pers_military_id varchar(45) DEFAULT NULL,
+  pers_military_id varchar(45) NOT NULL PRIMARY KEY,
   pers_rank varchar(45) DEFAULT NULL,
   pers_available int DEFAULT NULL,
   pers_location varchar(45) DEFAULT NULL,
   pers_unit varchar(45) DEFAULT NULL,
-  pers_comm_off_id int DEFAULT NULL,
-  PRIMARY KEY (pers_id)
+  pers_comm_off_id int DEFAULT NULL
 );
+
+insert into t_personnel (pers_id, pers_first_name,pers_last_name,pers_military_id,pers_rank,Pers_available,pers_location,pers_unit, Pers_comm_off_id) values
+(1, 'Deion','Sanders','123456789','1st Lieutenant', 0,'Peterson', '21st Force Support Squadron',0),
+(2, 'Charles','Kelley','234567890', 'Sergeant', 0, 'Peterson', '21st Force Support Squadron',1),
+(3, 'Sean','Lewis','345678901', 'Sergeant', 1, 'Peterson','21st Force Support Squadron',1),
+(4, 'Shedeur','Sanders','456789012','Specialist',0,'Peterson', '21st Force Support Squadron', 3),
+(5, 'Van','Wells','567890123','Specialist',0,'Peterson', '21st Force Support Squadron', 3),
+(6, 'Jalen','Sami','678901234','Specialist',0,'Peterson', '21st Force Support Squadron', 2),
+(7, 'Travis','Hunter','789012345','Specialist',1,'Peterson', '21st Force Support Squadron', 2);
 
 /* DROP TABLE IF EXISTS t_personnel CASCADE;
 CREATE TABLE IF NOT EXISTS t_personnel (

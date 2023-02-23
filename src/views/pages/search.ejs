@@ -21,20 +21,25 @@
       </div>
     </div>
     <div class="container">
-    <table class = "table">
-    <% if (items) {
-      var row = '<tr><th>Movie</th><th>Review</th><th>Review Date</th></tr>';
-
-      items.forEach(i => {
-        row = row + "<tr><td>" + i.movie_name +"</td>";
-        row = row + "<td>" + i.review + "</td>";
-        row = row + "<td>" + i.review_date + "</td></tr>";
-      });
-     } %>
-     <%- row %>
+    <table class = "table"> 
+      <% if (items) {
+        var table = '<tr><th>PID</th><th>First Name</th><th>Last Name</th><th>MID</th><th>Rank</th><th>Available</th><th>Location</th><th>Unit</th><th>Superior ID</th></tr>';
+    
+        items.forEach(i => {
+          table = table + "<tr><td>" + i.pers_id +"</td>";
+          table = table + "<td>" + i.pers_first_name + "</td>";
+          table = table + "<td>" + i.pers_last_name + "</td>";
+          table = table + "<td>" + i.pers_military_id + "</td>";
+          table = table + "<td>" + i.pers_rank + "</td>";
+          table = table + "<td>" + i.pers_available + "</td>";
+          table = table + "<td>" + i.pers_location + "</td>";
+          table = table + "<td>" + i.pers_unit + "</td>";
+          table = table + "<td>" + i.pers_comm_off_id + "</td></tr>";
+        });
+       } %>
+       <%- table %>
     </table>
   </div>
-
   </main>
 <%- include('../partials/footer'); -%>
 
