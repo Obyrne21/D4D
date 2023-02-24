@@ -10,30 +10,67 @@
 # [6] Secrets    | https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
 # ------------------------------------------------------------------------------
 
+version: '3.3' #For MySQL
 services:
   # heroku-cli:
   #   build: ./heroku
   #   env_file: ./heroku/.env
 
+  # For postgres database
   db:
     image: postgres
     build: ./db
     env_file: .env
     volumes:
-      - D4DDB:/var/lib/postgresql/data
+      - My-Data:/var/lib/postgresql/data
       - ./db/init_data:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pwd
-      POSTGRES_DB: t_personnel
+      POSTGRES_DB: D4DDB
+
+  # For sql database
+  # db:
+  #   image: mysql:5.7
+  #   build: ./db
+  #   env_file: .env
+  #   volumes:
+  #     - D4DDB:/var/lib/postgresql/data
+  #     - ./db/init_data:/docker-entrypoint-initdb.d
+  #   environment:
+  #     MYSQL_DATABASE: t_personnel
+  #     MYSQL_USER: mysql
+  #     MYSQL_PASSWORD: pwd
+
+  #For MySQL WorkBench
+  # db:
+  #   image: mysql:5.7
+  #   restart: always
+  #   environment:
+  #     MYSQL_DATABASE: 'D4DDB'
+  #     # So you don't have to use root, but you can if you like
+  #     #MYSQL_USER: 'root'
+  #     # You can use whatever password you like
+  #     #MYSQL_PASSWORD: 'DataBase'
+  #     # Password for root access
+  #     MYSQL_ROOT_PASSWORD: 'DataBase'
+  #   ports:
+  #     # <Port exposed> : < MySQL Port running inside container>
+  #     - '3307:3306'
+  #   expose:
+  #     # Opens port 3306 on the container
+  #     - '3306'
+  #     # Where our data will be persisted
+  #   volumes:
+  #     - D4DDB:/var/lib/mysql
 
   web:
     build: 
       context: ./
       dockerfile: Dockerfile
       target: devapp
-    depends_on:
-      - db                                      
+    # depends_on:
+    #   - db                                      
     env_file: .env
     ports:
         - "3000:3000" 
@@ -41,5 +78,6 @@ services:
       - ./src:/app/src
       - ./test:/app/test
 
+# For postgres database
 volumes:
-  D4DDB: {}
+  My-Data: 

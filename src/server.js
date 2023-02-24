@@ -31,7 +31,7 @@ var pgp = require('pg-promise')();
 const dev_dbConfig = {
 	host: 'db',
 	port: 5432,
-	database: 't_personnel',
+	database: 'D4DDB',
 	user:  'postgres',
 	password: 'pwd'
 };
@@ -66,7 +66,7 @@ app.get('/', function(req, res) {
   });
 
   app.get('/search', function(req, res) {
-	var data = "SELECT * FROM t_personnel;";
+	var data = "SELECT * FROM D4DDB.t_personnel;";
 
 	db.task('get-everything', task => {
         return task.batch([
@@ -97,8 +97,8 @@ app.get('/', function(req, res) {
 
   app.post('/filter', function(req, res) {
 	var filt = req.body.filter_name;
-	var data = "select * from t_personnel where pers_last_name like '%"+filt+"%';";
-	var backup = "select * from t_personnel;";
+	var data = "select * from D4DDB.t_personnel where pers_last_name like '%"+filt+"%';";
+	var backup = "select * from D4DDB.t_personnel;";
 
 	db.task('get-everything', task => {
         return task.batch([

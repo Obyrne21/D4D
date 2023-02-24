@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS t_personnel CASCADE;
-CREATE TABLE IF NOT EXISTS t_personnel (
+CREATE SCHEMA IF NOT EXISTS D4DDB;
+DROP TABLE IF EXISTS D4DDB.t_personnel CASCADE;
+CREATE TABLE IF NOT EXISTS D4DDB.t_personnel (
   pers_id int DEFAULT NULL,
   pers_first_name varchar(45) DEFAULT NULL,
   pers_last_name varchar(45) DEFAULT NULL,
@@ -11,7 +12,7 @@ CREATE TABLE IF NOT EXISTS t_personnel (
   pers_comm_off_id int DEFAULT NULL
 );
 
-insert into t_personnel (pers_id, pers_first_name,pers_last_name,pers_military_id,pers_rank,Pers_available,pers_location,pers_unit, Pers_comm_off_id) values
+insert into D4DDB.t_personnel (pers_id, pers_first_name,pers_last_name,pers_military_id,pers_rank,Pers_available,pers_location,pers_unit, Pers_comm_off_id) values
 (1, 'Deion','Sanders','123456789','1st Lieutenant', 0,'Peterson', '21st Force Support Squadron',0),
 (2, 'Charles','Kelley','234567890', 'Sergeant', 0, 'Peterson', '21st Force Support Squadron',1),
 (3, 'Sean','Lewis','345678901', 'Sergeant', 1, 'Peterson','21st Force Support Squadron',1),
@@ -20,27 +21,19 @@ insert into t_personnel (pers_id, pers_first_name,pers_last_name,pers_military_i
 (6, 'Jalen','Sami','678901234','Specialist',0,'Peterson', '21st Force Support Squadron', 2),
 (7, 'Travis','Hunter','789012345','Specialist',1,'Peterson', '21st Force Support Squadron', 2);
 
-/* DROP TABLE IF EXISTS t_personnel CASCADE;
-CREATE TABLE IF NOT EXISTS t_personnel (
-  pers_id int NOT NULL AUTO_INCREMENT,
-  pers_first_name varchar(45) DEFAULT NULL,
-  pers_last_name varchar(45) DEFAULT NULL,
-  pers_military_id varchar(45) DEFAULT NULL,
-  pers_rank varchar(45) DEFAULT NULL,
-  pers_available int DEFAULT NULL,
-  pers_location varchar(45) DEFAULT NULL,
-  pers_unit varchar(45) DEFAULT NULL,
-  pers_comm_off_id int DEFAULT NULL,
-  PRIMARY KEY (pers_id)
-); */
-/*
-CREATE TABLE D4DDB.`t_competency_model` (
-  `comp_model_id` int NOT NULL AUTO_INCREMENT,
-  `comp_model_name` varchar(45) DEFAULT NULL,
-  `comp_model_desc` varchar(180) DEFAULT NULL,
-  PRIMARY KEY (`comp_model_id`)
+
+DROP TABLE IF EXISTS D4DDB.t_competency_model CASCADE;
+CREATE TABLE IF NOT EXISTS D4DDB.t_competency_model (
+  comp_model_id int DEFAULT NULL,
+  comp_model_name varchar(45) DEFAULT NULL,
+  comp_model_desc varchar(180) DEFAULT NULL
 );
 
+insert into D4DDB.t_competency_model (comp_model_id, comp_model_name,comp_model_desc) values 
+(1, '43EX Bioenvironmental Engineer Model','The Occupational Competenices for the 43EX Specialty'),
+(2, 'General KSAO','General Knowledge, Skills, Abilities or Other');
+
+/*
 CREATE TABLE D4DDB.`t_competency` (
   `comp_id` int NOT NULL AUTO_INCREMENT,
   `comp_name` varchar(45) DEFAULT NULL,
