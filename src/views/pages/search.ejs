@@ -39,6 +39,17 @@
        } %>
        <%- table %>
     </table>
+    <table class = "table"> 
+      <% if (model) {
+        var table2 = '<tr><th>ID</th><th>Name</th><th>Description</th></tr>';
+        model.forEach(i => {
+          table2 = table2 + "<tr><td>" + i.comp_model_id +"</td>";
+          table2 = table2 + "<td>" + i.comp_model_name + "</td>";
+          table2 = table2 + "<td>" + i.comp_model_desc + "</td></tr>";
+        });
+       } %>
+       <%- table2 %>
+    </table>
   </div>
   </main>
 <%- include('../partials/footer'); -%>

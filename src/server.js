@@ -67,10 +67,12 @@ app.get('/', function(req, res) {
 
   app.get('/search', function(req, res) {
 	var data = "SELECT * FROM D4DDB.t_personnel;";
+	var comp_model = "select * from D4DDB.t_competency_model;";
 
 	db.task('get-everything', task => {
         return task.batch([
-            task.any(data)
+            task.any(data),
+			task.any(comp_model)
         ]);
     })
 	
@@ -79,6 +81,7 @@ app.get('/', function(req, res) {
     	res.render('pages/search',{
 				my_title: 'Search CTAM',
 				items: info[0],
+				model: info[1],
 				error: false,
 				message: ''
 			})
@@ -99,19 +102,22 @@ app.get('/', function(req, res) {
 	var filt = req.body.filter_name;
 	var data = "select * from D4DDB.t_personnel where pers_last_name like '%"+filt+"%';";
 	var backup = "select * from D4DDB.t_personnel;";
+	var comp_model = "select * from D4DDB.t_competency_model;";
 
 	db.task('get-everything', task => {
         return task.batch([
             task.any(data),
-			task.any(backup)
+			task.any(backup),
+			task.any(comp_model)
         ]);
     })
 	.then(info => {
 		//console.log(info[0]);
-		if (info[0] == "") {
+		if (info[0] == "" || info[2] == "") {
 			res.render('pages/search',{
 				my_title: 'Search CTAM',
 				items: info[1],
+				model: info[2],
 				error: false,
 				message: ''
 			})
@@ -120,6 +126,7 @@ app.get('/', function(req, res) {
 			res.render('pages/search',{
 				my_title: 'Search CTAM',
 				items: info[0],
+				model: info[2],
 				error: false,
 				message: ''
 			})
