@@ -11,7 +11,7 @@
 
             </div>
             <div class="col-5">
-              <input class="form-control" type="text" name="filter_name" placeholder="Filter by Last Name">
+              <input class="form-control" type="text" name="filter_name" placeholder="Filter by Competency Name">
             </div>
             <div class="col-1">
               <input class="btn btn-primary" type="submit" name="Filter" value = "Filter"/>
@@ -23,33 +23,20 @@
     <div class="container">
     <table class = "table"> 
       <% if (items) {
-        var table = '<tr><th>PID</th><th>First Name</th><th>Last Name</th><th>MID</th><th>Rank</th><th>Available</th><th>Location</th><th>Unit</th><th>Superior ID</th></tr>';
+        var table = '<tr><th>First Name</th><th>Last Name</th><th>MID</th><th>Comp Model</th><th>Competency</th><th>Sub Comp</th><th>Proficiency</th></tr>';
     
         items.forEach(i => {
-          table = table + "<tr><td>" + i.pers_id +"</td>";
-          table = table + "<td>" + i.pers_first_name + "</td>";
+          table = table + "<tr><td>" + i.pers_first_name +"</td>";
           table = table + "<td>" + i.pers_last_name + "</td>";
           table = table + "<td>" + i.pers_military_id + "</td>";
-          table = table + "<td>" + i.pers_rank + "</td>";
-          table = table + "<td>" + i.pers_available + "</td>";
-          table = table + "<td>" + i.pers_location + "</td>";
-          table = table + "<td>" + i.pers_unit + "</td>";
-          table = table + "<td>" + i.pers_comm_off_id + "</td></tr>";
+          table = table + "<td>" + i.comp_model_name + "</td>";
+          table = table + "<td>" + i.comp_name + "</td>";
+          table = table + "<td>" + i.sub_comp_name + "</td>";
+          table = table + "<td>" + i.prof_level + "</td></tr>";
         });
        } %>
        <%- table %>
     </table>
-    <!-- <table class = "table"> 
-      <% if (model) {
-        var table2 = '<tr><th>ID</th><th>Name</th><th>Description</th></tr>';
-        model.forEach(i => {
-          table2 = table2 + "<tr><td>" + i.comp_model_id +"</td>";
-          table2 = table2 + "<td>" + i.comp_model_name + "</td>";
-          table2 = table2 + "<td>" + i.comp_model_desc + "</td></tr>";
-        });
-       } %>
-       <%- table2 %>
-    </table> -->
   </div>
   </main>
 <%- include('../partials/footer'); -%>

@@ -151,6 +151,7 @@ tp2.pers_last_name AS Comm_Officer
 from (D4DDB.t_personnel tp left join D4DDB.t_personnel tp2 on((tp.pers_comm_off_id = tp2.pers_id)));
 
 
+
 CREATE OR REPLACE VIEW D4DDB.v_pers_comp AS select
 p.pers_first_name AS pers_first_name,
 p.pers_last_name AS pers_last_name,
@@ -171,3 +172,21 @@ join D4DDB.t_competency_model cm on((pcm.comp_model_id = cm.comp_model_id)))
 join D4DDB.t_competency c on((pcm.comp_id = c.comp_id)))
 join D4DDB.t_sub_competency sc on((pcm.sub_comp_id = sc.sub_comp_id)))
 join D4DDB.t_prof_level pl on((pcm.prof_level_id = pl.prof_level_id)));
+/*
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `d4ddb`.`v_pers_comp`
+ AS select `d4ddb`.`p`.`pers_first_name` AS `pers_first_name`,
+ `d4ddb`.`p`.`pers_last_name` AS `pers_last_name`,
+ `d4ddb`.`p`.`pers_military_id` AS `pers_military_id`,
+ `d4ddb`.`p`.`pers_rank` AS `pers_rank`,`d4ddb`.`p`.`available` AS `available`,
+ `d4ddb`.`p`.`pers_location` AS `pers_location`,
+ `d4ddb`.`p`.`pers_unit` AS `Pers_unit`,`d4ddb`.`p`.`Comm_Officer` AS `comm_officer`,
+ `cm`.`comp_model_name` AS `comp_model_name`,`c`.`comp_name` AS `comp_name`,
+ `sc`.`sub_comp_name` AS `sub_comp_name`,`pl`.`prof_level` AS `prof_level`,
+ (case when (`pcm`.`stat` = 0) then 'Pending' when (`pcm`.`stat` = 1) then 'Active' end) AS `Status`
+  from (((((`d4ddb`.`v_pers` `p` 
+  join `d4ddb`.`t_pers_comp_map` `pcm` on((`d4ddb`.`p`.`pers_id` = `pcm`.`pers_id`))) 
+  join `d4ddb`.`t_competency_model` `cm` on((`pcm`.`comp_model_id` = `cm`.`comp_model_id`))) 
+  join `d4ddb`.`t_competency` `c` on((`pcm`.`comp_id` = `c`.`comp_id`))) 
+  join `d4ddb`.`t_sub_competency` `sc` on((`pcm`.`sub_comp_id` = `sc`.`sub_comp_id`))) 
+  join `d4ddb`.`t_prof_level` `pl` on((`pcm`.`prof_level_id` = `pl`.`prof_level_id`)));
+*/
