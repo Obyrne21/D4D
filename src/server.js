@@ -97,7 +97,98 @@ app.get('/', function(req, res) {
 
   app.post('/filter', function(req, res) {
 	var filt = req.body.filter_name;
-	var data = "select * from D4DDB.v_pers_comp where comp_name like '%"+filt+"%';";
+	var comp_model = req.body.comp_model_name;
+	var sub_comp = req.body.sub_comp_name;
+	var expert = req.body.expert;
+	var advanced = req.body.advanced;
+	var intermediate = req.body.intermediate;
+	var basic = req.body.basic;
+	var anythingBefore = 0;
+	var data;
+	if (!filt && !comp_model && !sub_comp && !expert && !advanced && !intermediate && !basic) {
+		data = "select * from D4DDB.v_pers_comp;";
+	}
+	else {
+		data = "select * from D4DDB.v_pers_comp where ";
+		if (filt) {
+			data += "comp_name like '%"+filt+"%' ";
+			anythingBefore = 1;
+		}
+		if (comp_model) {
+			if (anythingBefore) {data += "and "};
+			data += "comp_model_name like '%"+comp_model+"%' ";
+			anythingBefore = 1;
+		}
+		if (sub_comp) {
+			if (anythingBefore) {data += "and "};
+			data += "sub_comp_name like '%"+sub_comp+"%' ";
+			anythingBefore = 1;
+		}
+
+		if (expert && advanced && intermediate && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Advanced' OR prof_level = 'Intermediate' OR prof_level = 'Basic')";
+		}
+		else if (expert && advanced && intermediate) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Advanced' OR prof_level = 'Intermediate')";
+		}
+		else if (expert && advanced && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Advanced' OR prof_level = 'Basic')";
+		}
+		else if (expert && intermediate && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Intermediate' OR prof_level = 'Basic')";
+		}
+		else if (advanced && intermediate && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Advanced' OR prof_level = 'Intermediate' OR prof_level = 'Basic')";
+		}
+		else if (expert && advanced) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Advanced')";
+		}
+		else if (expert && intermediate) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Intermediate')";
+		}
+		else if (expert && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Expert' OR prof_level = 'Basic')";
+		}
+		else if (advanced && intermediate) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Advanced' OR prof_level = 'Intermediate')";
+		}
+		else if (advanced && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Advanced' OR prof_level = 'Basic')";
+		}
+		else if (intermediate && basic) {
+			if (anythingBefore) {data += "and "};
+			data += "(prof_level = 'Intermediate' OR prof_level = 'Basic')";
+		}
+		else if (expert) {
+			if (anythingBefore) {data += "and "};
+			data += "prof_level = 'Expert'";
+		}
+		else if (advanced) {
+			if (anythingBefore) {data += "and "};
+			data += "prof_level = 'Advanced'";
+		}
+		else if (intermediate) {
+			if (anythingBefore) {data += "and "};
+			data += "prof_level = 'Intermediate'";
+		}
+		else if (basic) {
+			if (anythingBefore) {data += "and "};
+			data += "prof_level = 'Basic'";
+		}
+		data += ";";
+	}
+
+
 	var backup = "select * from D4DDB.v_pers_comp;";
 
 	db.task('get-everything', task => {
