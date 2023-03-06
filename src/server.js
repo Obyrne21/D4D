@@ -228,6 +228,51 @@ app.get('/', function(req, res) {
 	});
   });
   
+
+  app.get('/personnel', function(req, res) {
+	//var first = req.query.first_name;
+	//var last = req.query.last_name;
+	var mid = req.query.mid;
+	var data;
+	var underlings;
+	
+	if (mid) {
+		data = "select * from D4DDB.v_pers_comp where pers_military_id like '%"+mid+"%';";
+		underlings = "select * from D4DDB.v_pers_comp where comm_officer like '%"+mid+"%';";
+	}
+	else {
+		data = "select * from D4DDB.v_pers_comp;";
+	}
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(data),
+			task.any(underlings)
+        ]);
+    })
+	
+	.then(info => {
+		//console.log(info);
+    	res.render('pages/personnel',{
+				my_title: 'Search CTAM',
+				items: info[0],
+				underlings: info[1],
+				error: false,
+				message: ''
+			})
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/personnel', {
+			my_title: "Search CTAM",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
   //to request data from API for given search criteria
   //TODO: You need to edit the code for this route to search for movie reviews and return them to the front-end
 //   app.post('/get_feed', function(req, res) {

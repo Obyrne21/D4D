@@ -147,7 +147,7 @@ tp.pers_rank AS pers_rank,
 (case when (tp.pers_available = 0) then 'Unavailable' when (tp.pers_available = 1)then 'Available' end) AS available,
 tp.pers_location AS pers_location,
 tp.pers_unit AS pers_unit,
-tp2.pers_last_name AS Comm_Officer
+tp2.pers_military_id AS Comm_Officer
 from (D4DDB.t_personnel tp left join D4DDB.t_personnel tp2 on((tp.pers_comm_off_id = tp2.pers_id)));
 
 
