@@ -232,22 +232,33 @@ app.get('/', function(req, res) {
   app.get('/personnel', function(req, res) {
 	//var first = req.query.first_name;
 	//var last = req.query.last_name;
-	var mid = req.query.mid;
+	// var mid;
 	var data;
 	var underlings;
-	
-	if (mid) {
+	var pending;
+	var person;
+	//console.log("MID: " + req.body.mid);
+	let mid = req.query.mid;
+	if (req.query.mid) {
+		//mid = req.query.mid;
 		data = "select * from D4DDB.v_pers_comp where pers_military_id like '%"+mid+"%';";
-		underlings = "select * from D4DDB.v_pers_comp where comm_officer like '%"+mid+"%';";
+		underlings = "select * from D4DDB.v_pers where Comm_Officer like '%"+mid+"%';";
+		pending = "select * from D4DDB.v_pers_comp where comm_officer like '%"+mid+"%' and stat = 'Pending';";
+		person =  "select * from D4DDB.v_pers where pers_military_id like '%"+mid+"%';";
 	}
 	else {
-		data = "select * from D4DDB.v_pers_comp;";
+		console.log("ERROR IN /Personnel");
+		data = "";
+		underlings = "";
+		pending = "";
 	}
 
 	db.task('get-everything', task => {
         return task.batch([
             task.any(data),
-			task.any(underlings)
+			task.any(underlings),
+			task.any(pending),
+			task.any(person)
         ]);
     })
 	
@@ -257,6 +268,9 @@ app.get('/', function(req, res) {
 				my_title: 'Search CTAM',
 				items: info[0],
 				underlings: info[1],
+				pending: info[2],
+				person: info[3],
+				mid: mid,
 				error: false,
 				message: ''
 			})
@@ -264,7 +278,7 @@ app.get('/', function(req, res) {
 
 	.catch(err => {
 		console.log('error', err);
-		res.render('pages/personnel', {
+		res.render('pages/main', {
 			my_title: "Search CTAM",
 			items: '',
 			error: false,
@@ -273,6 +287,41 @@ app.get('/', function(req, res) {
 	});
   });
 
+
+  app.post('/newPers', function(req, res) {
+	var first_name = req.body.add_first_name;
+	var last_name = req.body.add_last_name;
+	var add_mid = req.body.add_mid;
+	var location = req.body.add_location;
+	var unit = req.body.add_unit;
+	var rank = req.body.add_rank;
+	var available;
+	if (req.body.add_available == "Available") available = 1; else available = 0;
+	var comm_officer = req.body.add_commanding_officer; //Need to rework database to 
+	var taken = "SELECT COUNT(*) FROM D4DDB.t_personnel WHERE pers_military_id = '"+add_mid+"';";
+	var query = "INSERT INTO D4DDB.t_personnel (pers_first_name, pers_last_name, pers_military_id, pers_rank, pers_available, pers_location, pers_unit, pers_comm_off_id) VALUES ('"+first_name+"', '"+last_name+"', '"+add_mid+"', '"+rank+"', '"+available+"', '"+location+"', '"+unit+"', '"+comm_officer+"');";
+
+	db.task('get-everything', task => {
+        return task.batch([
+			task.any(taken),
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
   //to request data from API for given search criteria
   //TODO: You need to edit the code for this route to search for movie reviews and return them to the front-end
 //   app.post('/get_feed', function(req, res) {

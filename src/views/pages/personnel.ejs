@@ -2,12 +2,15 @@
 <%- include('../partials/menu') %>
 <body>
   <main>
-    <% if (items) {
-        var info = '<center><h1 style="padding: 2%;">' + items[0].pers_first_name + ' ' + items[0].pers_last_name + '</h1></center>';
-        info += '<center><h5>Military ID: ' + items[0].pers_military_id + '</h5></center>';
-        if (items[0].comm_officer) {
-            info += '<center><h5>Commanding Officer: <a href="/personnel?mid=' + items[0].comm_officer + '">' + items[0].comm_officer + '</a></h5></center>';
+    <% if (person) {
+        var info = '<div class="container"><center><h1 style="padding: 2%;">' + person[0].pers_first_name + ' ' + person[0].pers_last_name + '</h1></center>';
+        info += '<center><table class="table table-sm" style="width:50%;"><tr><th>Military ID</th><th>' + person[0].pers_military_id + '</th></tr>';
+        if (person[0].comm_officer) {
+            info += '<tr><th>Commanding Officer</th><th><a href="/personnel?mid=' + person[0].comm_officer + '">' + person[0].comm_officer_first_name + ' ' + person[0].comm_officer_last_name + '</a></th></tr>';
         }
+        info += '<tr><th>Location</th><th>' + person[0].pers_location + '</th></tr>';
+        info += '<tr><th>Unit</th><th>' + person[0].pers_unit + '</th></tr>';
+        info += '<tr><th>Availability</th><th>' + person[0].pers_available + '</th></tr></table></div></center>';
        } %>
     <%- info %>
     <div class="container">
@@ -24,6 +27,32 @@
            } %>
            <%- table %>
         </table>
+        <!-- Inspiration from https://getbootstrap.com/docs/4.0/components/modal/ -->
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newComp">
+            Add New Competency
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="newComp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Competency</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
     <div class="container">
         <table class = "table"> 
@@ -37,7 +66,71 @@
            } %>
            <%- table2 %>
         </table>
-      </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newPers">
+            Add New Personnel
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="newPers" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form class="" action="/newPers" method="post">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Personnel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control" type="text" name="add_first_name" placeholder="First Name" required>
+                        <br>
+                        <input class="form-control" type="text" name="add_last_name" placeholder="Last Name" required>
+                        <br>
+                        <input class="form-control" type="text" name="add_mid" placeholder="Military ID" required>
+                        <br>
+                        <input class="form-control" type="text" name="add_location" placeholder="Location" required>
+                        <br>
+                        <input class="form-control" type="text" name="add_unit" placeholder="Unit" required>
+                        <br>
+                        <input class="form-control" type="text" name="add_rank" placeholder="Rank" required>
+                        <br>
+                        <input type="radio" id="available" name="add_availability" value="1" required>
+                            <label for="available">Available</label><br>
+                            <input type="radio" id="unavailable" name="add_availability" value="0">
+                            <label for="unavailable">Unavailable</label><br>
+                        <br>
+                        <% var str = "<p> This person will be created with commanding officer " + person[0].pers_first_name + " " + person[0].pers_last_name + "</p>";
+                            str += "<input type='hidden' id='add_commanding_officer' name='add_commanding_officer' value='" + person[0].pers_id + "'>";
+                        %>
+                        <%- str %>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <table class = "table"> 
+          <% if (pending) {
+            var table3 = '<h3 style="padding: 2%;"><center>Pending Requests</center></h3><tr><th>Name</th><th>Comp Model</th><th>Competency</th><th>Sub Comp</th><th>Proficiency</th><th>Accept</th><th>Decline</th></tr>';
+            pending.forEach(i => {
+              table3 = table3 + "<tr><td>" + i.pers_first_name + " " + i.pers_last_name + "</td>";
+              table3 = table3 + "<td>" + i.comp_model_name + "</td>";
+              table3 = table3 + "<td>" + i.comp_name + "</td>";
+              table3 = table3 + "<td>" + i.sub_comp_name + "</td>";
+              table3 = table3 + "<td>" + i.prof_level + "</td>";
+              table3 = table3 + "<td><button class='btn btn-success'>Accept</button></td>";
+              table3 = table3 + "<td><button class='btn btn-danger'>Decline</button></td></tr>";
+            });
+           } %>
+           <%- table3 %>
+        </table>
+    </div>
   </main>
 <%- include('../partials/footer'); -%>
 

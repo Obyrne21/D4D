@@ -147,12 +147,15 @@ tp.pers_rank AS pers_rank,
 (case when (tp.pers_available = 0) then 'Unavailable' when (tp.pers_available = 1)then 'Available' end) AS available,
 tp.pers_location AS pers_location,
 tp.pers_unit AS pers_unit,
-tp2.pers_military_id AS Comm_Officer
+tp2.pers_military_id AS Comm_Officer,
+tp2.pers_first_name AS comm_officer_first_name,
+tp2.pers_last_name AS comm_officer_last_name
 from (D4DDB.t_personnel tp left join D4DDB.t_personnel tp2 on((tp.pers_comm_off_id = tp2.pers_id)));
 
 
 
 CREATE OR REPLACE VIEW D4DDB.v_pers_comp AS select
+p.pers_id AS pers_id,
 p.pers_first_name AS pers_first_name,
 p.pers_last_name AS pers_last_name,
 p.pers_military_id AS pers_military_id,
@@ -161,8 +164,14 @@ p.available AS available,
 p.pers_location AS pers_location,
 p.pers_unit AS Pers_unit,
 p.Comm_Officer AS comm_officer,
+p.comm_officer_first_name AS comm_officer_first_name,
+p.comm_officer_last_name AS comm_officer_last_name,
+pcm.pers_comp_map_id AS pers_comp_map_id,
+cm.comp_model_id AS comp_model_id,
 cm.comp_model_name AS comp_model_name,
+c.comp_id AS comp_id,
 c.comp_name AS comp_name,
+sc.sub_comp_id AS sub_comp_id,
 sc.sub_comp_name AS sub_comp_name,
 pl.prof_level AS prof_level,
 (case when (pcm.stat = 0) then 'Pending' when (pcm.stat = 1) then 'Active' end) AS stat
@@ -172,21 +181,20 @@ join D4DDB.t_competency_model cm on((pcm.comp_model_id = cm.comp_model_id)))
 join D4DDB.t_competency c on((pcm.comp_id = c.comp_id)))
 join D4DDB.t_sub_competency sc on((pcm.sub_comp_id = sc.sub_comp_id)))
 join D4DDB.t_prof_level pl on((pcm.prof_level_id = pl.prof_level_id)));
-/*
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `d4ddb`.`v_pers_comp`
- AS select `d4ddb`.`p`.`pers_first_name` AS `pers_first_name`,
- `d4ddb`.`p`.`pers_last_name` AS `pers_last_name`,
- `d4ddb`.`p`.`pers_military_id` AS `pers_military_id`,
- `d4ddb`.`p`.`pers_rank` AS `pers_rank`,`d4ddb`.`p`.`available` AS `available`,
- `d4ddb`.`p`.`pers_location` AS `pers_location`,
- `d4ddb`.`p`.`pers_unit` AS `Pers_unit`,`d4ddb`.`p`.`Comm_Officer` AS `comm_officer`,
- `cm`.`comp_model_name` AS `comp_model_name`,`c`.`comp_name` AS `comp_name`,
- `sc`.`sub_comp_name` AS `sub_comp_name`,`pl`.`prof_level` AS `prof_level`,
- (case when (`pcm`.`stat` = 0) then 'Pending' when (`pcm`.`stat` = 1) then 'Active' end) AS `Status`
-  from (((((`d4ddb`.`v_pers` `p` 
-  join `d4ddb`.`t_pers_comp_map` `pcm` on((`d4ddb`.`p`.`pers_id` = `pcm`.`pers_id`))) 
-  join `d4ddb`.`t_competency_model` `cm` on((`pcm`.`comp_model_id` = `cm`.`comp_model_id`))) 
-  join `d4ddb`.`t_competency` `c` on((`pcm`.`comp_id` = `c`.`comp_id`))) 
-  join `d4ddb`.`t_sub_competency` `sc` on((`pcm`.`sub_comp_id` = `sc`.`sub_comp_id`))) 
-  join `d4ddb`.`t_prof_level` `pl` on((`pcm`.`prof_level_id` = `pl`.`prof_level_id`)));
-*/
+
+-- CREATE OR REPLACE FUNCTION AUD_Personel(p_Act varchar(1), p_id int, p_first varchar(45),p_Last varchar(45), p_milID varchar(45), p_rank varchar(45), p_avail int, p_Loc varchar(45), p_unit varchar(45), p_off int)
+-- RETURNS void
+-- LANGUAGE SQL
+-- AS $$
+-- BEGIN
+-- IF (p_Act='D') THEN
+-- DELETE FROM t_personnel WHERE pers_id=p_id;
+-- ELSIF (p_Act='A') THEN
+-- INSERT INTO t_personnel (pers_first_name, pers_last_name, pers_military_id, pers_rank, pers_available, pers_unit, pers_comm_off_id)
+-- VALUES (p_first, p_last, p_milID, p_rank, p_avail, p_loc, p_unit, p_off);
+-- ELSIF (p_Act='U') THEN
+-- DELETE FROM t_personnel WHERE pers_id=p_id;
+-- INSERT INTO t_personnel (pers_first_name, pers_last_name, pers_military_id, pers_rank, pers_available, pers_unit, pers_comm_off_id)
+-- VALUES (p_first, p_last, p_milID, p_rank, p_avail, p_loc, p_unit, p_off);
+-- END IF;
+-- END;
