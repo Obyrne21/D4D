@@ -195,6 +195,23 @@ join D4DDB.t_competency c on((pcm.comp_id = c.comp_id)))
 join D4DDB.t_sub_competency sc on((pcm.sub_comp_id = sc.sub_comp_id)))
 join D4DDB.t_prof_level pl on((pcm.prof_level_id = pl.prof_level_id)));
 
+CREATE PROCEDURE D4DDB.AUD_Pers_Comp(p_act varchar(1), p_id int, p_pers int, p_comp_model int, p_comp int,
+p_sub_comp int, p_prof_level int, p_stat int)
+language plpgsql    
+as $$
+BEGIN
+if (p_act='D') then
+delete from D4DDB.t_pers_comp_map where pers_comp_map_id=p_id;
+elseif (p_act='A') then
+insert into D4DDB.t_pers_comp_map (pers_id,comp_model_id, comp_id, sub_comp_id, prof_comp_id,prof_level_id,stat)
+values (p_pers, p_comp_model, p_comp, p_sub_comp, p_prof_level, p_stat);
+elseif (p_act='U') then
+delete from D4DDB.t_pers_comp_map where pers_comp_map_id=p_id;
+insert into D4DDB.t_pers_comp_map (pers_id,comp_model_id, comp_id, sub_comp_id, prof_comp_id,prof_level_id,stat)
+values (p_pers, p_comp_model, p_comp, p_sub_comp, p_prof_level, p_stat);
+end if;
+END
+
 -- CREATE OR REPLACE FUNCTION AUD_Personel(p_Act varchar(1), p_id int, p_first varchar(45),p_Last varchar(45), p_milID varchar(45), p_rank varchar(45), p_avail int, p_Loc varchar(45), p_unit varchar(45), p_off int)
 -- RETURNS void
 -- LANGUAGE SQL

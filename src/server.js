@@ -253,12 +253,22 @@ app.get('/', function(req, res) {
 		pending = "";
 	}
 
+	//queries for addComp
+	var model = "select * from D4DDB.t_competency_model;";
+	var comp = "select * from D4DDB.t_competency;";
+	var sub = "select * from D4DDB.t_sub_competency;";
+	var prof = "select * from D4DDB.t_prof_level;";
+
 	db.task('get-everything', task => {
         return task.batch([
             task.any(data),
 			task.any(underlings),
 			task.any(pending),
-			task.any(person)
+			task.any(person),
+			task.any(model),
+			task.any(comp),
+			task.any(sub),
+			task.any(prof)
         ]);
     })
 	
@@ -271,6 +281,10 @@ app.get('/', function(req, res) {
 				pending: info[2],
 				person: info[3],
 				mid: mid,
+				model: info[4],
+				comp: info[5],
+				sub: info[6],
+				prof: info[7],
 				error: false,
 				message: ''
 			})

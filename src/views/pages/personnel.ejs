@@ -37,19 +37,66 @@
         <div class="modal fade" id="newComp" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Competency</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body">
-                ...
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
-                </div>
+                <form action="/newComp" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Competency</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="model">Competency Model</label>
+                        <select class="custom-select" id="model" name="model">
+                            <% if (model) {
+                                var dropdown = "";
+                                model.forEach(i => {
+                                    dropdown += '<option value="' + i.comp_model_id + '">' + i.comp_model_name + '</option>';
+                                });
+                                } %>
+                            <%- dropdown %>
+                        </select>
+                        <br>
+                        <label for="newComp">Competency</label>
+                        <select class="custom-select" id="newComp" name="newComp">
+                            <% if (comp) {
+                                var dropdown = "";
+                                comp.forEach(i => {
+                                    dropdown += '<option value="' + i.comp_id + '">' + i.comp_name + '</option>';
+                                });
+                                } %>
+                            <%- dropdown %>
+                        </select>
+                        <br>
+                        <label for="newSubComp">Sub Competency</label>
+                        <select class="custom-select" id="newSubComp" name="newSubComp">
+                            <% if (sub) {
+                                var dropdown = "";
+                                sub.forEach(i => {
+                                    dropdown += '<option value="' + i.sub_comp_id + '">' + i.sub_comp_name + '</option>';
+                                });
+                                } %>
+                            <%- dropdown %>
+                        </select>
+                        <br>
+                        <label for="newSubComp">Proficiency</label>
+                        <select class="custom-select" id="newSubComp" name="newSubComp">
+                            <% if (prof) {
+                                var dropdown = "";
+                                prof.forEach(i => {
+                                    dropdown += '<option value="' + i.prof_level_id + '">' + i.prof_level + '</option>';
+                                });
+                                } %>
+                            <%- dropdown %>
+                        </select>
+                        <% var str = "<input type='hidden' id='add_comp_pers_id' name='add_comp_pers_id' value='" + person[0].pers_id + "'>";
+                        %>
+                        <%- str %>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
             </div>
         </div>
