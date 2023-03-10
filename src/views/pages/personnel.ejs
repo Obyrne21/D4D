@@ -45,8 +45,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <label for="model">Competency Model</label>
-                        <select class="custom-select" id="model" name="model">
+                        <label for="newModel">Competency Model</label>
+                        <select class="custom-select" id="newModel" name="newModel">
                             <% if (model) {
                                 var dropdown = "";
                                 model.forEach(i => {
@@ -78,8 +78,8 @@
                             <%- dropdown %>
                         </select>
                         <br>
-                        <label for="newSubComp">Proficiency</label>
-                        <select class="custom-select" id="newSubComp" name="newSubComp">
+                        <label for="newProf">Proficiency</label>
+                        <select class="custom-select" id="newProf" name="newProf">
                             <% if (prof) {
                                 var dropdown = "";
                                 prof.forEach(i => {

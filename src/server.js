@@ -337,6 +337,36 @@ app.get('/', function(req, res) {
 	});
   });
 
+  app.post('/newComp', function(req, res) {
+	var pers_id = req.body.add_comp_pers_id;
+	var model_id = req.body.newModel;
+	var comp_id = req.body.newComp;
+	var sub_id = req.body.newSubComp;
+	var prof_id = req.body.newProf;
+	//console.log("PERS ID:"+pers_id);
+	var query = "insert into D4DDB.t_pers_comp_map(pers_id,comp_model_id,comp_id,sub_comp_id,prof_level_id, stat) VALUES ('"+pers_id+"', '"+model_id+"', '"+comp_id+"','"+sub_id+"', '"+prof_id+"', '0');";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
 
   app.get('/competency_model', function(req, res) {
 	let model_id = req.query.model_id;
