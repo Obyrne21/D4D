@@ -1,0 +1,27 @@
+<%- include('../partials/header'); -%>
+<%- include('../partials/menu') %>
+<body>
+  <main>
+    <div class="container">
+        <% if (model) {
+            var info = '<div class="container"><center><h1 style="padding: 2%;">' + model[0].comp_model_name + '</h1></center>';
+            info += '<center><table class="table table-sm" style="width:50%;"><tr><th>Model Description</th><th>' + model[0].comp_model_desc + '</th></tr></table></center></div>'
+           } %>
+        <%- info %>
+    </div>
+    <div class="container">
+        <table class = "table"> 
+          <% if (comp) {
+            var table = '<h3 style="padding: 2%;"><center>Competencies</center></h3><tr><th>Competency</th><th>Sub Comp</th><th>Proficiency</th><th>Behaviors</th></tr>';
+            comp.forEach(i => {
+              table = table + "<tr><td>" + i.comp_name + "</td>";
+              table = table + "<td>" + i.sub_comp_name + "</td>";
+              table = table + "<td>" + i.prof_level + "</td>";
+              table = table + "<td>" + i.behavior + "</td></tr>";
+            });
+           } %>
+           <%- table %>
+        </table>
+    </div>
+  </main>
+<%- include('../partials/footer'); -%>

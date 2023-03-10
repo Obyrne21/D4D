@@ -322,6 +322,79 @@ app.get('/', function(req, res) {
 		})
 	});
   });
+
+
+  app.get('/competency_model', function(req, res) {
+	let model_id = req.query.model_id;
+	
+	var model = "select * from D4DDB.t_competency_model where comp_model_id = '"+model_id+"';";
+	var comp = "select * from D4DDB.v_comp where comp_model_id = '"+model_id+"';";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(model),
+			task.any(comp)
+        ]);
+    })
+	
+	.then(info => {
+		//console.log(info);
+    	res.render('pages/competency_model',{
+				my_title: 'Search CTAM',
+				model: info[0],
+				comp: info[1],
+				error: false,
+				message: ''
+			})
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Search CTAM",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
+  app.get('/competency', function(req, res) {
+	let comp_id = req.query.comp_id;
+	
+	var comp = "select * from D4DDB.t_competency where comp_id = '"+comp_id+"';";
+	var t_comp = "select * from D4DDB.v_comp where comp_id = '"+comp_id+"';";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(comp),
+			task.any(t_comp)
+        ]);
+    })
+	
+	.then(info => {
+		//console.log(info);
+    	res.render('pages/competency',{
+				my_title: 'Search CTAM',
+				comp: info[0],
+				t_comp: info[1],
+				error: false,
+				message: ''
+			})
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Search CTAM",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
+
   //to request data from API for given search criteria
   //TODO: You need to edit the code for this route to search for movie reviews and return them to the front-end
 //   app.post('/get_feed', function(req, res) {

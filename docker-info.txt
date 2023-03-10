@@ -1,3 +1,4 @@
 docker-compose build //Build the container
 docker compose up  // Run the container
-docker-compose down --volumes // Close the container
+docker-compose down --volumes // Close the container and remove data from db
+docker-compose down // Close the container (doesn't remove data from db)

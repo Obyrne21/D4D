@@ -54,8 +54,8 @@
           table = table + "<tr><td><a href='/personnel?mid=" + i.pers_military_id + "'>" + i.pers_first_name + "</a></td>";
           table = table + "<td><a href='/personnel?mid=" + i.pers_military_id + "'>" + i.pers_last_name + "</a></td>";
           table = table + "<td><a href='/personnel?mid=" + i.pers_military_id + "'>" + i.pers_military_id + "</a></td>";
-          table = table + "<td>" + i.comp_model_name + "</td>";
-          table = table + "<td>" + i.comp_name + "</td>";
+          table = table + "<td><a href='/competency_model?model_id=" + i.comp_model_id + "'>" + i.comp_model_name + "</a></td>";
+          table = table + "<td><a href='/competency?comp_id=" + i.comp_id + "'>" + i.comp_name + "</a></td>";
           table = table + "<td>" + i.sub_comp_name + "</td>";
           table = table + "<td>" + i.prof_level + "</td></tr>";
         });

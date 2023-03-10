@@ -152,7 +152,20 @@ tp2.pers_first_name AS comm_officer_first_name,
 tp2.pers_last_name AS comm_officer_last_name
 from (D4DDB.t_personnel tp left join D4DDB.t_personnel tp2 on((tp.pers_comm_off_id = tp2.pers_id)));
 
-
+CREATE OR REPLACE VIEW D4DDB.v_comp AS select
+m.behavior AS behavior,
+cm.comp_model_id AS comp_model_id,
+cm.comp_model_name AS comp_model_name,
+c.comp_id AS comp_id,
+c.comp_name AS comp_name,
+sc.sub_comp_id AS sub_comp_id,
+sc.sub_comp_name AS sub_comp_name,
+pl.prof_level AS prof_level
+from D4DDB.t_comp_map m
+join D4DDB.t_competency_model cm on((m.comp_model_id = cm.comp_model_id)) 
+join D4DDB.t_competency c on((m.comp_id = c.comp_id))
+join D4DDB.t_sub_competency sc on((m.sub_comp_id = sc.sub_comp_id))
+join D4DDB.t_prof_level pl on((m.prof_level_id = pl.prof_level_id));
 
 CREATE OR REPLACE VIEW D4DDB.v_pers_comp AS select
 p.pers_id AS pers_id,
