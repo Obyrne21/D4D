@@ -3,10 +3,10 @@
 <body>
   <main>
     <div class="container">
-        <% if (comp) {
-            var info = '<div class="container"><center><h1 style="padding: 2%;">' + comp[0].comp_name + '</h1></center>';
-            <!-- info += '<div class="container"><center><h3 style="padding: 2%;">' + comp[0].comp_name + '</h3></center>'; -->
-            info += '<center><table class="table table-sm" style="width:50%;"><tr><th>Comp Description</th><th>' + comp[0].comp_desc + '</th></tr></table></center></div>'
+        <% if (t_comp) {
+            var info = '<div class="container"><center><h1 style="padding: 2%;">' + t_comp[0].comp_name + '</h1></center>';
+            info += '<div class="container"><center><table class="table table-sm" style="width:50%;"><tr><th>Model</th><th><a href="/competency_model?model_id=' + t_comp[0].comp_model_id + '">' + t_comp[0].comp_model_name + '</a></th></tr>';
+            info += '<tr><th>Comp Description</th><th>' + t_comp[0].comp_desc + '</th></tr></table></center></div>'
            } %>
         <%- info %>
     </div>
@@ -15,7 +15,7 @@
           <% if (t_comp) {
             var table = '<h3 style="padding: 2%;"><center>Sub Competencies</center></h3><tr><th>Sub Comp</th><th>Proficiency</th><th>Behaviors</th></tr>';
             t_comp.forEach(i => {
-              table = table + "<tr><td>" + i.sub_comp_name + "</td>";
+              table = table + "<tr><td><a href='/sub_competency?sub_comp_id=" + i.comp_id + "'>" + i.sub_comp_name + "</a></td>";
               table = table + "<td>" + i.prof_level + "</td>";
               table = table + "<td>" + i.behavior + "</td></tr>";
             });

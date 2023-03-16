@@ -37,25 +37,27 @@ insert into D4DDB.t_competency_model (comp_model_name,comp_model_desc) values
 CREATE TABLE D4DDB.t_competency (
   comp_id SERIAL PRIMARY KEY,
   comp_name varchar(45) DEFAULT NULL,
-  comp_desc varchar(180) DEFAULT NULL
+  comp_desc varchar(180) DEFAULT NULL,
+  comp_model_id INT DEFAULT NULL
 );
 
-insert into D4DDB.t_competency (comp_name,comp_desc) 
-values ('Risk Assessment and Mitigation', 'Provide Risk Assessment and Mitiggation Plans'),
-('Management','Provide Management'),
-('Language','Language Profeciency');
+insert into D4DDB.t_competency (comp_name,comp_desc, comp_model_id) 
+values ('Risk Assessment and Mitigation', 'Provide Risk Assessment and Mitiggation Plans', 1),
+('Management','Provide Management', 1),
+('Language','Language Profeciency', 2);
 
 CREATE TABLE D4DDB.t_sub_competency (
   sub_comp_id SERIAL PRIMARY KEY,
   sub_comp_name varchar(45) DEFAULT NULL,
-  sub_comp_desc varchar(180) DEFAULT NULL
+  sub_comp_desc varchar(180) DEFAULT NULL,
+  comp_id INT DEFAULT NULL
 );
 
-insert into D4DDB.t_sub_competency (sub_comp_name,sub_comp_desc) values 
-('Data Collection','Collect Data for Analysis'),
-('Program Management','Lead multi-track projects'),
-('Data Entry','Enter in data'),
-('Spanish Language','Proficeincy in the Spanish Language');
+insert into D4DDB.t_sub_competency (sub_comp_name,sub_comp_desc, comp_id) values 
+('Data Collection','Collect Data for Analysis', 1),
+('Program Management','Lead multi-track projects', 2),
+('Data Entry','Enter in data', 1),
+('Spanish Language','Proficeincy in the Spanish Language', 3);
 
 CREATE TABLE D4DDB.t_prof_level (
   prof_level_id SERIAL PRIMARY KEY,
@@ -156,10 +158,13 @@ CREATE OR REPLACE VIEW D4DDB.v_comp AS select
 m.behavior AS behavior,
 cm.comp_model_id AS comp_model_id,
 cm.comp_model_name AS comp_model_name,
+cm.comp_model_desc AS comp_model_desc,
 c.comp_id AS comp_id,
 c.comp_name AS comp_name,
+c.comp_desc AS comp_desc,
 sc.sub_comp_id AS sub_comp_id,
 sc.sub_comp_name AS sub_comp_name,
+sc.sub_comp_desc AS sub_comp_desc,
 pl.prof_level AS prof_level
 from D4DDB.t_comp_map m
 join D4DDB.t_competency_model cm on((m.comp_model_id = cm.comp_model_id)) 
@@ -195,36 +200,19 @@ join D4DDB.t_competency c on((pcm.comp_id = c.comp_id)))
 join D4DDB.t_sub_competency sc on((pcm.sub_comp_id = sc.sub_comp_id)))
 join D4DDB.t_prof_level pl on((pcm.prof_level_id = pl.prof_level_id)));
 
-CREATE PROCEDURE D4DDB.AUD_Pers_Comp(p_act varchar(1), p_id int, p_pers int, p_comp_model int, p_comp int,
-p_sub_comp int, p_prof_level int, p_stat int)
-language plpgsql    
-as $$
-BEGIN
-if (p_act='D') then
-delete from D4DDB.t_pers_comp_map where pers_comp_map_id=p_id;
-elseif (p_act='A') then
-insert into D4DDB.t_pers_comp_map (pers_id,comp_model_id, comp_id, sub_comp_id, prof_comp_id,prof_level_id,stat)
-values (p_pers, p_comp_model, p_comp, p_sub_comp, p_prof_level, p_stat);
-elseif (p_act='U') then
-delete from D4DDB.t_pers_comp_map where pers_comp_map_id=p_id;
-insert into D4DDB.t_pers_comp_map (pers_id,comp_model_id, comp_id, sub_comp_id, prof_comp_id,prof_level_id,stat)
-values (p_pers, p_comp_model, p_comp, p_sub_comp, p_prof_level, p_stat);
-end if;
-END
-
--- CREATE OR REPLACE FUNCTION AUD_Personel(p_Act varchar(1), p_id int, p_first varchar(45),p_Last varchar(45), p_milID varchar(45), p_rank varchar(45), p_avail int, p_Loc varchar(45), p_unit varchar(45), p_off int)
--- RETURNS void
--- LANGUAGE SQL
--- AS $$
+-- CREATE PROCEDURE D4DDB.AUD_Pers_Comp(p_act varchar(1), p_id int, p_pers int, p_comp_model int, p_comp int,
+-- p_sub_comp int, p_prof_level int, p_stat int)
+-- language plpgsql    
+-- as $$
 -- BEGIN
--- IF (p_Act='D') THEN
--- DELETE FROM t_personnel WHERE pers_id=p_id;
--- ELSIF (p_Act='A') THEN
--- INSERT INTO t_personnel (pers_first_name, pers_last_name, pers_military_id, pers_rank, pers_available, pers_unit, pers_comm_off_id)
--- VALUES (p_first, p_last, p_milID, p_rank, p_avail, p_loc, p_unit, p_off);
--- ELSIF (p_Act='U') THEN
--- DELETE FROM t_personnel WHERE pers_id=p_id;
--- INSERT INTO t_personnel (pers_first_name, pers_last_name, pers_military_id, pers_rank, pers_available, pers_unit, pers_comm_off_id)
--- VALUES (p_first, p_last, p_milID, p_rank, p_avail, p_loc, p_unit, p_off);
--- END IF;
--- END;
+-- if (p_act='D') then
+-- delete from D4DDB.t_pers_comp_map where pers_comp_map_id=p_id;
+-- elseif (p_act='A') then
+-- insert into D4DDB.t_pers_comp_map (pers_id,comp_model_id, comp_id, sub_comp_id, prof_comp_id,prof_level_id,stat)
+-- values (p_pers, p_comp_model, p_comp, p_sub_comp, p_prof_level, p_stat);
+-- elseif (p_act='U') then
+-- delete from D4DDB.t_pers_comp_map where pers_comp_map_id=p_id;
+-- insert into D4DDB.t_pers_comp_map (pers_id,comp_model_id, comp_id, sub_comp_id, prof_comp_id,prof_level_id,stat)
+-- values (p_pers, p_comp_model, p_comp, p_sub_comp, p_prof_level, p_stat);
+-- end if;
+-- END
