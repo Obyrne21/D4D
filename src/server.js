@@ -469,6 +469,162 @@ app.get('/', function(req, res) {
 	});
   });
 
+  app.get('/create', function(req, res) {
+
+	//queries for creating Model, Comp, SubComp
+	var model = "select * from D4DDB.t_competency_model;";
+	var comp = "select * from D4DDB.t_competency;";
+	var sub = "select * from D4DDB.t_sub_competency;";
+	var prof = "select * from D4DDB.t_prof_level;";
+
+	db.task('get-everything', task => {
+        return task.batch([
+			task.any(model),
+			task.any(comp),
+			task.any(sub),
+			task.any(prof)
+        ]);
+    })
+	
+	.then(info => {
+		//console.log(info);
+    	res.render('pages/create',{
+				my_title: 'Search CTAM',
+				model: info[0],
+				comp: info[1],
+				sub: info[2],
+				prof: info[3],
+				error: false,
+				message: ''
+			})
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Search CTAM",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
+  app.post('/createModel', function(req, res) {
+	var model_name = req.body.model_model_name;
+	var model_desc = req.body.model_model_desc;
+
+	var query = "insert into D4DDB.t_competency_model(comp_model_name, comp_model_desc) VALUES ('"+model_name+"', '"+model_desc+"');";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
+
+  app.post('/createComp', function(req, res) {
+	var model_id = req.body.comp_model_id;
+	var comp_name = req.body.comp_comp_name;
+	var comp_desc = req.body.comp_comp_desc;
+
+	var query = "insert into D4DDB.t_competency(comp_name, comp_desc, comp_model_id) VALUES ('"+comp_name+"', '"+comp_desc+"', '"+model_id+"');";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
+  app.post('/createSubComp', function(req, res) {
+	//var model_id = req.body.subcomp_model_id;
+	var comp_id = req.body.subcomp_comp_id;
+	var sub_name = req.body.subcomp_sub_name;
+	var sub_desc = req.body.subcomp_sub_desc;
+
+	var query = "insert into D4DDB.t_sub_competency(sub_comp_name, sub_comp_desc, comp_id) VALUES ('"+sub_name+"', '"+sub_desc+"', '"+comp_id+"');";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
+  app.post('/createBehavior', function(req, res) {
+	var model_id = req.body.behavior_model_id;
+	var comp_id = req.body.behavior_comp_id;
+	var sub_id = req.body.behavior_sub_id;
+	var prof_id = req.body.behavior_prof_id;
+	var behavior = req.body.behavior_behavior;
+
+	var query = "insert into D4DDB.t_comp_map(comp_model_id,comp_id,sub_comp_id,prof_level_id,behavior) VALUES ('"+model_id+"', '"+comp_id+"', '"+sub_id+"', '"+prof_id+"', '"+behavior+"');";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
+	});
+  });
+
   //to request data from API for given search criteria
   //TODO: You need to edit the code for this route to search for movie reviews and return them to the front-end
 //   app.post('/get_feed', function(req, res) {

@@ -1,0 +1,211 @@
+<%- include('../partials/header'); -%>
+<%- include('../partials/menu') %>
+<body>
+  <main>
+    <br>
+    <div class="container-fluid">
+      <!-- Inspiration from https://getbootstrap.com/docs/4.0/components/modal/ -->
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModel">
+          Create New Competency Model
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="createModel" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <form action="/createModel" method="post">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Create New Competency Model</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                    <input class="form-control" type="text" name="model_model_name" placeholder="Competency Model Name" required>
+                    <br>
+                    <textarea class="form-control" type="text" name="model_model_desc" placeholder="Model Description" rows="3" required></textarea>
+                    <br>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+      </div>
+
+
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createComp">
+        Create New Competency 
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="createComp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="/createComp" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Competency</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="comp_model_id">Competency Model</label>
+                    <select class="custom-select" id="comp_model_id" name="comp_model_id">
+                        <% if (model) {
+                            var dropdown = "";
+                            model.forEach(i => {
+                                dropdown += '<option value="' + i.comp_model_id + '">' + i.comp_model_name + '</option>';
+                            });
+                            } %>
+                        <%- dropdown %>
+                    </select>
+                    <br><br>
+                    <input class="form-control" type="text" name="comp_comp_name" placeholder="Competency Name" required>
+                    <br>
+                    <textarea class="form-control" type="text" name="comp_comp_desc" placeholder="Competency Description" rows="3" required></textarea>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createSubComp">
+      Create New Sub Competency
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="createSubComp" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <form action="/createSubComp" method="post">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Create New Sub Competency Model</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <label for="subcomp_model_id">Competency Model</label>
+                  <select class="custom-select" id="subcomp_model_id" name="subcomp_model_id">
+                      <% if (model) {
+                          var dropdown = "";
+                          model.forEach(i => {
+                              dropdown += '<option value="' + i.comp_model_id + '">' + i.comp_model_name + '</option>';
+                          });
+                          } %>
+                      <%- dropdown %>
+                  </select>
+                  <br>
+                  <label for="subcomp_comp_id">Competency</label>
+                  <select class="custom-select" id="subcomp_comp_id" name="subcomp_comp_id">
+                      <% if (comp) {
+                          var dropdown = "";
+                          comp.forEach(i => {
+                              dropdown += '<option value="' + i.comp_id + '">' + i.comp_name + '</option>';
+                          });
+                          } %>
+                      <%- dropdown %>
+                  </select>
+                  <br>
+                  <br>
+                    <input class="form-control" type="text" name="subcomp_sub_name" placeholder="Sub Competency Name" required>
+                    <br>
+                    <textarea class="form-control" type="text" name="subcomp_sub_desc" placeholder="Sub Competency Description" rows="3" required></textarea>
+                    <br>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+          </form>
+      </div>
+      </div>
+  </div>
+
+
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newBehavior">
+    Create New Behavior
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="newBehavior" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <form action="/createBehavior" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create New Behavior</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="behavior_model_id">Competency Model</label>
+                <select class="custom-select" id="behavior_model_id" name="behavior_model_id">
+                    <% if (model) {
+                        var dropdown = "";
+                        model.forEach(i => {
+                            dropdown += '<option value="' + i.comp_model_id + '">' + i.comp_model_name + '</option>';
+                        });
+                        } %>
+                    <%- dropdown %>
+                </select>
+                <br>
+                <label for="behavior_comp_id">Competency</label>
+                <select class="custom-select" id="behavior_comp_id" name="behavior_comp_id">
+                    <% if (comp) {
+                        var dropdown = "";
+                        comp.forEach(i => {
+                            dropdown += '<option value="' + i.comp_id + '">' + i.comp_name + '</option>';
+                        });
+                        } %>
+                    <%- dropdown %>
+                </select>
+                <br>
+                <label for="behavior_sub_id">Sub Competency</label>
+                <select class="custom-select" id="behavior_sub_id" name="behavior_sub_id">
+                    <% if (sub) {
+                        var dropdown = "";
+                        sub.forEach(i => {
+                            dropdown += '<option value="' + i.sub_comp_id + '">' + i.sub_comp_name + '</option>';
+                        });
+                        } %>
+                    <%- dropdown %>
+                </select>
+                <br>
+                <label for="behavior_prof_id">Proficiency</label>
+                <select class="custom-select" id="behavior_prof_id" name="behavior_prof_id">
+                    <% if (prof) {
+                        var dropdown = "";
+                        prof.forEach(i => {
+                            dropdown += '<option value="' + i.prof_level_id + '">' + i.prof_level + '</option>';
+                        });
+                        } %>
+                    <%- dropdown %>
+                </select>
+                <br><br>
+                    <textarea class="form-control" type="text" name="behavior_behavior" placeholder="Behavior" rows="3" required></textarea>
+                    <br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+  </div>
+  </main>
+<%- include('../partials/footer'); -%>
+

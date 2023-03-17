@@ -20,7 +20,7 @@
             items.forEach(i => {
               table = table + "<tr><td><a href='/competency_model?model_id=" + i.comp_model_id + "'>" + i.comp_model_name + "</a></td>";
               table = table + "<td><a href='/competency?comp_id=" + i.comp_id + "'>" + i.comp_name + "</a></td>";
-              table = table + "<td><a href='/sub_competency?sub_comp_id=" + i.comp_id + "'>" + i.sub_comp_name + "</a></td>";
+              table = table + "<td><a href='/sub_competency?sub_comp_id=" + i.sub_comp_id + "'>" + i.sub_comp_name + "</a></td>";
               table = table + "<td>" + i.prof_level + "</td>";
               table = table + "<td>" + i.stat + "</td></tr>";
             });
