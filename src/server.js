@@ -636,7 +636,28 @@ app.get('/', function(req, res) {
 
 	var query = "delete from D4DDB.t_pers_comp_map where pers_comp_map_id="+pers_comp_id+";";
 		query += "insert into D4DDB.t_pers_comp_map (pers_id, comp_model_id, comp_id, sub_comp_id, prof_level_id, stat) values ("+pers_id+","+model+", "+comp+","+sub+", "+prof_level+", 1);";
-	console.log(query);
+	// console.log(query);
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.redirect('back');
+	});
+  });
+
+  app.post('/pendingDecline', function(req, res) {
+	var pers_comp_id = req.query.pers_comp_id;
+
+	var query = "delete from D4DDB.t_pers_comp_map where pers_comp_map_id="+pers_comp_id+";";
+
 	db.task('get-everything', task => {
         return task.batch([
             task.any(query)
