@@ -171,7 +171,13 @@
               table3 = table3 + "<td>" + i.comp_name + "</td>";
               table3 = table3 + "<td>" + i.sub_comp_name + "</td>";
               table3 = table3 + "<td>" + i.prof_level + "</td>";
-              table3 = table3 + "<td><button class='btn btn-success'>Accept</button></td>";
+              table3 = table3 + "<td><form action='/pendingAccept?pers_comp_id=" + i.pers_comp_map_id +
+                "&pers_id=" + i.pers_id +
+                "&model=" + i.comp_model_id +
+                "&comp=" + i.comp_id +
+                "&sub=" + i.sub_comp_id +
+                "&prof_level=" + i.prof_level_id +
+                "' method='post'><button type='submit' class='btn btn-success'>Accept</button></form></td>";
               table3 = table3 + "<td><button class='btn btn-danger'>Decline</button></td></tr>";
             });
            } %>

@@ -192,6 +192,7 @@ c.comp_name AS comp_name,
 sc.sub_comp_id AS sub_comp_id,
 sc.sub_comp_name AS sub_comp_name,
 pl.prof_level AS prof_level,
+pl.prof_level_id AS prof_level_id,
 (case when (pcm.stat = 0) then 'Pending' when (pcm.stat = 1) then 'Active' end) AS stat
 from (((((D4DDB.v_pers p 
 join D4DDB.t_pers_comp_map pcm on((p.pers_id = pcm.pers_id)))

@@ -625,6 +625,34 @@ app.get('/', function(req, res) {
 	});
   });
 
+
+  app.post('/pendingAccept', function(req, res) {
+	var pers_comp_id = req.query.pers_comp_id;
+	var pers_id = req.query.pers_id;
+	var model = req.query.model;
+	var comp = req.query.comp;
+	var sub = req.query.sub;
+	var prof_level = req.query.prof_level;
+
+	var query = "delete from D4DDB.t_pers_comp_map where pers_comp_map_id="+pers_comp_id+";";
+		query += "insert into D4DDB.t_pers_comp_map (pers_id, comp_model_id, comp_id, sub_comp_id, prof_level_id, stat) values ("+pers_id+","+model+", "+comp+","+sub+", "+prof_level+", 1);";
+	console.log(query);
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		//console.log('error', err);
+		res.redirect('back');
+	});
+  });
+
   //to request data from API for given search criteria
   //TODO: You need to edit the code for this route to search for movie reviews and return them to the front-end
 //   app.post('/get_feed', function(req, res) {
