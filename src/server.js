@@ -406,7 +406,6 @@ app.get('/', function(req, res) {
   app.get('/competency', function(req, res) {
 	let comp_id = req.query.comp_id;
 	
-	// var comp = "select * from D4DDB.t_competency where comp_id = '"+comp_id+"';";
 	var t_comp = "select * from D4DDB.v_comp where comp_id = '"+comp_id+"';";
 
 	db.task('get-everything', task => {
