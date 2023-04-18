@@ -36,6 +36,8 @@
                 <label for="basic"> Basic</label> 
                 </div>
               </div>
+              <input type="checkbox" id="available" name="available" value="available">
+              <label for="available"> Available</label> 
               <br>
               <input class="btn btn-primary" type="submit" name="Filter" value = "Filter"/>
             </div>
@@ -56,7 +58,7 @@
           <!-- table = table + "<td><a href='/personnel?mid=" + i.pers_military_id + "'>" + i.pers_military_id + "</a></td>"; -->
           table = table + "<td><a href='/competency_model?model_id=" + i.comp_model_id + "'>" + i.comp_model_name + "</a></td>";
           table = table + "<td><a href='/competency?comp_id=" + i.comp_id + "'>" + i.comp_name + "</a></td>";
-          table = table + "<td><a href='/sub_competency?sub_comp_id=" + i.comp_id + "'>" + i.sub_comp_name + "</a></td>";
+          table = table + "<td><a href='/sub_competency?sub_comp_id=" + i.sub_comp_id + "'>" + i.sub_comp_name + "</a></td>";
           table = table + "<td>" + i.prof_level + "</td></tr>";
         });
        } %>

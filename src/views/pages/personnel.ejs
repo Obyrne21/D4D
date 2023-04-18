@@ -3,16 +3,107 @@
 <body>
   <main>
     <% if (person) {
-        var info = '<div class="container"><center><h1 style="padding: 2%;">' + person[0].pers_first_name + ' ' + person[0].pers_last_name + '</h1></center>';
-        info += '<center><table class="table table-sm" style="width:50%;"><tr><th>Military ID</th><th>' + person[0].pers_military_id + '</th></tr>';
+        var info = '<div class="container" style="width:30%;"><center><h1 style="padding: 2%;">' + person[0].pers_first_name + ' ' + person[0].pers_last_name + '</h1></center>';
+        info += '<center><table class="table table-sm" ><tr><th>Military ID</th><th>' + person[0].pers_military_id + '</th></tr>';
         if (person[0].comm_officer) {
             info += '<tr><th>Commanding Officer</th><th><a href="/personnel?mid=' + person[0].comm_officer + '">' + person[0].comm_officer_first_name + ' ' + person[0].comm_officer_last_name + '</a></th></tr>';
         }
         info += '<tr><th>Location</th><th>' + person[0].pers_location + '</th></tr>';
         info += '<tr><th>Unit</th><th>' + person[0].pers_unit + '</th></tr>';
-        info += '<tr><th>Availability</th><th>' + person[0].pers_available + '</th></tr></table></div></center>';
+        info += '<tr><th>Availability</th><th>' + person[0].available + '</th></tr></table></center>';
+        info += '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updatePersonnel">Update Personnel Information</button>';
+        info += '</div>';
        } %>
     <%- info %>
+
+
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="updatePersonnel" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="/updatePersonnel" method="post">
+                <div class="modal-header">
+                    <% if (person) {
+                        var name = '<h5 class="modal-title" id="exampleModalLabel">Update ' + person[0].pers_first_name + ' ' + person[0].pers_last_name + '\'s Information</h5>'
+                    } %>
+                    <%- name %>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <label for="updateFirstName">First Name</label>
+                  <% if (person) {
+                    var updateFirstName = '<input class="form-control" type="text" name="updateFirstName" value="' + person[0].pers_first_name + '" required>';
+                  } %>
+                  <%- updateFirstName %>
+                  <br>
+                  <label for="updateLastName">Last Name</label>
+                  <% if (person) {
+                    var updateLastName = '<input class="form-control" type="text" name="updateLastName" value="' + person[0].pers_last_name + '" required>';
+                  } %>
+                  <%- updateLastName %>
+                  <br>
+                  <label for="updateMID">Military ID</label>
+                  <% if (person) {
+                    var updateMID = '<input class="form-control" type="text" name="updateMID" value="' + person[0].pers_military_id + '" required disabled>';
+                  } %>
+                  <%- updateMID %>
+                  <br>
+                  <label for="updateRank">Rank</label>
+                  <% if (person) {
+                    var updateRank = '<input class="form-control" type="text" name="updateRank" value="' + person[0].pers_rank + '" required>';
+                  } %>
+                  <%- updateRank %>
+                  <br>
+                  <label for="updateLocation">Location</label>
+                  <% if (person) {
+                    var updateLocation = '<input class="form-control" type="text" name="updateLocation" value="' + person[0].pers_location + '" required>';
+                  } %>
+                  <%- updateLocation %>
+                  <br>
+                  <label for="updateUnit">Unit</label>
+                  <% if (person) {
+                    var updateUnit = '<input class="form-control" type="text" name="updateUnit" value="' + person[0].pers_unit + '" required>';
+                  } %>
+                  <%- updateUnit %>
+                  <br>
+
+                  <% if (person) {
+                    if (person[0].available == 'Available') {
+                        var updateAvailable = '<input type="radio" id="updateAvailable" name="update_availability" value="1" checked="checked" required>';
+                        updateAvailable += '<label for="updateAvailable">Available</label><br>';
+                        updateAvailable += '<input type="radio" id="updateUnavailable" name="update_availability" value="0">';
+                        updateAvailable += '<label for="updateUnavailable">Unavailable</label><br>';
+                    }
+                    else {
+                        var updateAvailable = '<input type="radio" id="updateAvailable" name="update_availability" value="1" required>';
+                        updateAvailable += '<label for="updateAvailable">Available</label><br>';
+                        updateAvailable += '<input type="radio" id="updateUnavailable" name="update_availability" value="0" checked="checked">';
+                        updateAvailable += '<label for="updateUnavailable">Unavailable</label><br>';
+                    }
+                  } %>
+                  <%- updateAvailable %>
+                  <br>
+                  <%  if (person) {
+                    var str = "<input type='hidden' id='update_pers_id' name='update_pers_id' value='" + person[0].pers_id + "'>";
+                  } %>
+                    <%- str %>
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+
+
     <div class="container">
         <table class = "table"> 
           <% if (items) {

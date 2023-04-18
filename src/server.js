@@ -65,6 +65,15 @@ app.get('/', function(req, res) {
 	});
   });
 
+  app.get('/future', function(req, res) {
+	res.render('pages/future', {
+	  my_title: "CTAM",
+	  items: '',
+	  error: false,
+	  message: ''
+	});
+  });
+
   app.get('/search', function(req, res) {
 	var data = "select * from D4DDB.v_pers_comp;";
 
@@ -103,9 +112,11 @@ app.get('/', function(req, res) {
 	var advanced = req.body.advanced;
 	var intermediate = req.body.intermediate;
 	var basic = req.body.basic;
+	var available = req.body.available;
+	
 	var anythingBefore = 0;
 	var data;
-	if (!filt && !comp_model && !sub_comp && !expert && !advanced && !intermediate && !basic) {
+	if (!filt && !comp_model && !sub_comp && !expert && !advanced && !intermediate && !basic && !available) {
 		data = "select * from D4DDB.v_pers_comp;";
 	}
 	else {
@@ -122,6 +133,13 @@ app.get('/', function(req, res) {
 		if (sub_comp) {
 			if (anythingBefore) {data += "and "};
 			data += "sub_comp_name like '%"+sub_comp+"%' ";
+			anythingBefore = 1;
+		}
+		
+		if (available) {
+			//console.log(available);
+			if (anythingBefore) {data += "and "};
+			data += "available = 'Available' ";
 			anythingBefore = 1;
 		}
 
@@ -186,6 +204,7 @@ app.get('/', function(req, res) {
 			data += "prof_level = 'Basic'";
 		}
 		data += ";";
+		//console.log(data);
 	}
 
 
@@ -670,6 +689,39 @@ app.get('/', function(req, res) {
 	.catch(err => {
 		//console.log('error', err);
 		res.redirect('back');
+	});
+  });
+
+  app.post('/updatePersonnel', function(req, res) {
+	var first_name = req.body.updateFirstName;
+	var last_name = req.body.updateLastName;
+	var add_mid = req.body.updateMID;
+	var location = req.body.updateLocation;
+	var unit = req.body.updateUnit;
+	var rank = req.body.updateRank;
+	var available = req.body.update_availability;
+	var pers_id = req.body.update_pers_id;
+	//if (req.body.update_availability == "Available") available = 1; else available = 0;
+	var query = "UPDATE D4DDB.t_personnel SET pers_first_name = '"+first_name+"', pers_last_name = '"+last_name+"', pers_rank = '"+rank+"', pers_available = '"+available+"', pers_location = '"+location+"', pers_unit = '"+unit+"' WHERE pers_id = '"+pers_id+"';";
+
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+	
+	.then(info => {
+		res.redirect('back');
+    })
+
+	.catch(err => {
+		console.log('error', err);
+		res.render('pages/main', {
+			my_title: "Personnel",
+			items: '',
+			error: false,
+			message: ''
+		})
 	});
   });
 
