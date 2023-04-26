@@ -12,14 +12,17 @@ CREATE TABLE IF NOT EXISTS D4DDB.t_personnel (
   pers_comm_off_id int DEFAULT NULL
 );
 
+-- insert into D4DDB.t_personnel (pers_first_name,pers_last_name,pers_military_id,pers_rank,Pers_available,pers_location,pers_unit, Pers_comm_off_id) values
+-- ('Deion','Sanders','123456789','1st Lieutenant', 0,'Peterson', '21st Force Support Squadron',0),
+-- ('Charles','Kelley','234567890', 'Sergeant', 0, 'Peterson', '21st Force Support Squadron',1),
+-- ('Sean','Lewis','345678901', 'Sergeant', 1, 'Peterson','21st Force Support Squadron',1),
+-- ('Shedeur','Sanders','456789012','Specialist',0,'Peterson', '21st Force Support Squadron', 3),
+-- ('Van','Wells','567890123','Specialist',0,'Peterson', '21st Force Support Squadron', 3),
+-- ('Jalen','Sami','678901234','Specialist',0,'Peterson', '21st Force Support Squadron', 2),
+-- ('Travis','Hunter','789012345','Specialist',1,'Peterson', '21st Force Support Squadron', 2);
+
 insert into D4DDB.t_personnel (pers_first_name,pers_last_name,pers_military_id,pers_rank,Pers_available,pers_location,pers_unit, Pers_comm_off_id) values
-('Deion','Sanders','123456789','1st Lieutenant', 0,'Peterson', '21st Force Support Squadron',0),
-('Charles','Kelley','234567890', 'Sergeant', 0, 'Peterson', '21st Force Support Squadron',1),
-('Sean','Lewis','345678901', 'Sergeant', 1, 'Peterson','21st Force Support Squadron',1),
-('Shedeur','Sanders','456789012','Specialist',0,'Peterson', '21st Force Support Squadron', 3),
-('Van','Wells','567890123','Specialist',0,'Peterson', '21st Force Support Squadron', 3),
-('Jalen','Sami','678901234','Specialist',0,'Peterson', '21st Force Support Squadron', 2),
-('Travis','Hunter','789012345','Specialist',1,'Peterson', '21st Force Support Squadron', 2);
+('John','Smith','123456789','1st Lieutenant', 0,'Peterson', '21st Force Support Squadron',0);
 
 
 DROP TABLE IF EXISTS D4DDB.t_competency_model CASCADE;
@@ -29,8 +32,12 @@ CREATE TABLE IF NOT EXISTS D4DDB.t_competency_model (
   comp_model_desc varchar(180) DEFAULT NULL
 );
 
+-- insert into D4DDB.t_competency_model (comp_model_name,comp_model_desc) values 
+-- ('43EX Bioenvironmental Engineer Model','The Occupational Competenices for the 43EX Specialty'),
+-- ('General KSAO','General Knowledge, Skills, Abilities or Other');
+
 insert into D4DDB.t_competency_model (comp_model_name,comp_model_desc) values 
-('43EX Bioenvironmental Engineer Model','The Occupational Competenices for the 43EX Specialty'),
+('Bioenvironmental Engineer','The Occupational Competenices for the 43EX Specialty'),
 ('General KSAO','General Knowledge, Skills, Abilities or Other');
 
 
@@ -122,23 +129,29 @@ CREATE TABLE D4DDB.t_pers_comp_map (
   stat int DEFAULT NULL
 );
 
+-- insert into d4ddb.t_pers_comp_map (pers_id,comp_model_id,comp_id,sub_comp_id,prof_level_id, stat) values 
+-- (1,1,1,1,1,1),
+-- (1,1,2,2,1,1),
+-- (1,1,1,3,1,1),
+-- (1,2,3,4,3,1),
+-- (2,1,1,1,2,1),
+-- (2,1,1,3,2,1),
+-- (2,2,3,4,3,1),
+-- (3,1,2,2,2,0),
+-- (3,2,3,4,2,1),
+-- (4,1,1,1,3,1),
+-- (4,1,1,3,2,1),
+-- (5,1,1,1,3,1),
+-- (5,1,1,3,4,0),
+-- (5,2,3,4,1,1),
+-- (6,1,2,2,3,1),
+-- (7,1,2,2,3,0);
+
 insert into d4ddb.t_pers_comp_map (pers_id,comp_model_id,comp_id,sub_comp_id,prof_level_id, stat) values 
 (1,1,1,1,1,1),
 (1,1,2,2,1,1),
 (1,1,1,3,1,1),
-(1,2,3,4,3,1),
-(2,1,1,1,2,1),
-(2,1,1,3,2,1),
-(2,2,3,4,3,1),
-(3,1,2,2,2,0),
-(3,2,3,4,2,1),
-(4,1,1,1,3,1),
-(4,1,1,3,2,1),
-(5,1,1,1,3,1),
-(5,1,1,3,4,0),
-(5,2,3,4,1,1),
-(6,1,2,2,3,1),
-(7,1,2,2,3,0);
+(1,2,3,4,3,1);
 
 CREATE OR REPLACE VIEW D4DDB.v_pers AS select
 tp.pers_id AS pers_id,
